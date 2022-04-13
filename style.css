@@ -1,0 +1,35 @@
+/* Styling sheet for AI Personal Trainer*/
+
+input[type=message], input[type=email], input[type=text], textarea{
+    width: 95%; 
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: both
+}
+
+
+/* Submit button */
+
+button[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Hovering over submit button */
+button[type=submit]:hover{
+    background-color: #45a049;
+}
+
+/* Hide Streamlit branding */
+/* # MainMenu {visibility: hidden;} */
+footer{visibility: hidden;}
+header {visibility: hidden;}
+
