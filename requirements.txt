@@ -3,4 +3,4 @@ numpy==1.22.3
 requests==2.27.1
 streamlit==1.8.0
 streamlit_lottie==0.0.3
-opencv_python==4.5.5.64
+opencv-python-headless==4.2.0.32
