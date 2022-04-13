@@ -11,18 +11,23 @@ import mediapipe as mp
 mp_drawing = mp.solutions.drawing_utils  # for mp models to draw on images
 mp_pose = mp.solutions.pose  # for importing pose estimation models e.g. face detection, face mesh, hand detections etc
 
+
 # ----Config Section-----
 
 # Set up title
-st.set_page_config(page_title="My AI Trainer",
-                   layout="wide",
-                   page_icon="🧊",
-                   menu_items=
-                   {'Get Help': 'https://www.extremelycoolapp.com/help',
-                    'About': "# This is a header. This is an *extremely* cool app!"}
-                   )
+st.set_page_config(page_title="My AI Trainer", 
+                   layout="wide", 
+                   page_icon="🧊", 
+                   menu_items= 
+         {'Get Help': 'https://www.extremelycoolapp.com/help',
+         'Report a bug': "https://www.extremelycoolapp.com/bug",
+         'About': "# This is a header. This is an *extremely* cool app!" }    
+)
 
 st.title("Live AI Personal Trainer")
+
+
+
 
 
 # Load animations via Lottie website
@@ -45,17 +50,19 @@ def style_contact_doc(file_name):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
+
+
 # -------Header Section------
 with st.container():
     columnL, columnR = st.columns(2)
     with columnL:
         st.subheader("Welcome to my AI Personal Trainer v1.0! :movie_camera: ")
-        st.markdown(
-            "Where artificial intelligence tracks your workout techniques in real-time to get the most out of your workout :camera: ")
+        st.markdown("Where artificial intelligence tracks your workout techniques in real-time to get the most out of your workout :camera: ")
         # lottie_animation = load_animation_via_link("https://assets5.lottiefiles.com/packages/lf20_v4isjbj5.json")
         lottie_animation = load_animation_via_link("https://assets7.lottiefiles.com/packages/lf20_zrqthn6o.json")
         st_lottie(lottie_animation, height=400, width=700, key="ai_robot1")
     with columnR:
+        
         lottie_animation = load_animation_via_link("https://assets10.lottiefiles.com/packages/lf20_kq6zs04j.json")
         st_lottie(lottie_animation, height=400, width=700, key="github")
         st.subheader(" How to use this app ")
@@ -69,6 +76,8 @@ with st.container():
 
 
         """)
+
+
 
 # --------------Workout Selection -----------------------
 with st.container():
@@ -88,6 +97,9 @@ with st.container():
 if workout == 'None' and run is True:
     st.markdown("You need to select a workout before you can begin session")
 
+
+
+
 # Bicep Curls
 if workout == "Bicep Curls":
     with st.container():
@@ -100,6 +112,7 @@ if workout == "Bicep Curls":
             st.subheader("Preparation")
             st.markdown("""
                 * Warm up your arms by performing light stretches before beginning workout 
+                
 
             """)
             # st.markdown("""""")
@@ -125,95 +138,91 @@ if workout == "Bicep Curls":
                 **Remember to prioritize good technique when performing your exercise to get the best 
                 out of your sessions - enjoy your workout!**  
                 """)
-
-
                 def calculate_bicep_angle(a, b, c):
                     a = np.array(a)  # First endpoint
                     b = np.array(b)  # Middle endpoint
                     c = np.array(c)  # Last endpoint
-
+                
                     # Calculate radians to convert to angles
                     radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
                     angle = np.abs(radians * 180.0 / np.pi)
-
+                
                     # Convert angle between 0 and 180 
                     if angle > 180.0:
                         angle = 360 - angle
-
+                
                     return angle
 
 
                 cap = cv2.VideoCapture(0)
-
+                
                 # Establish your counter variables
                 counter = 0  # number of curls to start with
                 arm_position = None  # top or bottom part of your curl
                 font = cv2.FONT_HERSHEY_SIMPLEX
-
+                
                 with mp_pose.Pose(min_detection_confidence=0.5,
-                                  min_tracking_confidence=0.5) as pose:  # level of detection & tracking accuracy
+                                min_tracking_confidence=0.5) as pose:  # level of detection & tracking accuracy
                     while cap.isOpened():
                         success, frame = cap.read()
-
+                
                         # Recolour image from BGR to RGB 
                         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                         image.flags.writeable = False  # make pixel arrays read-only to detect image (saves disk memory)
-
+                
                         # Detect image 
                         results = pose.process(image)
-
+                
                         # Recolour image from RGB to BGR again
-                        image.flags.writeable = True  # Make pixel arrays writable (editable) to revert from RGB to BGR
+                        image.flags.writeable = True    # Make pixel arrays writable (editable) to revert from RGB to BGR
                         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                         image = cv2.resize(image, (1280, 720))
-
+                
                         # Extract landmarks by collecting x,y coordinates for useful body joints
                         try:
                             landmarks = results.pose_landmarks.landmark
-
+                
                             shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER].x,
                                         landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER].y]
-                            elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW].x,
-                                     landmarks[mp_pose.PoseLandmark.LEFT_ELBOW].y]
-                            wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST].x,
-                                     landmarks[mp_pose.PoseLandmark.LEFT_WRIST].y]
-
+                            elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW].x, landmarks[mp_pose.PoseLandmark.LEFT_ELBOW].y]
+                            wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST].x, landmarks[mp_pose.PoseLandmark.LEFT_WRIST].y]
+                
                             angle = calculate_bicep_angle(shoulder, elbow, wrist)
-
+                
                             # Display angles in images 
                             cv2.putText(image, str(angle),
                                         tuple(np.multiply(elbow, [640, 480]).astype(int)),
                                         font, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                                         )
-
+                
                             # Count the number of bicep curls 
                             if angle > 160:  # if angle is greater than 160...
                                 arm_position = "down"  # ... then arm position is down
-
+                
                             if angle < 30 and arm_position == "down":  # if angle is less than 30 and arm position is down...
                                 arm_position = "up"  # ...record arm position as up...
                                 counter += 1  # ...and add one rep to the total reps ...
                                 print(counter)  # ... and display total counts
-
+                
                         except:
                             pass
-
+                
                         # Create progress tracking box at the top left of the screen  
                         # '''Rectangle 1 '''
-
+                
                         rect1_starting_point = (0, 0)
                         rect1_ending_point = (370, 82)
                         rect1_colour = (245, 117, 16)
                         rect1_thickness = -1
-
+                
                         cv2.rectangle(image,
-                                      rect1_starting_point,  # starting point
-                                      rect1_ending_point,  # ending point
-                                      rect1_colour,  # box colour
-                                      rect1_thickness)  # thickness
-
+                                    rect1_starting_point,  # starting point
+                                    rect1_ending_point,  # ending point
+                                    rect1_colour,  # box colour
+                                    rect1_thickness)  # thickness
+                
                         # Add 'WORKOUT' title to rectangle
-
+                
                         rect1_title = 'WORKOUT'
                         rect1_title_text_org = (15, 12)
                         rect1_title_font = font
@@ -221,7 +230,7 @@ if workout == "Bicep Curls":
                         rect1_title_colour = (0, 0, 0)
                         rect1_title_text_thickness = 1
                         rect1_title_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect1_title,
                                     rect1_title_text_org,
@@ -230,9 +239,9 @@ if workout == "Bicep Curls":
                                     rect1_title_colour,
                                     rect1_title_text_thickness,
                                     rect1_title_line_type)
-
+                
                         # Add workout type
-
+                
                         rect1_body = 'Bicep Curls'
                         rect1_body_text_org = (10, 65)
                         rect1_body_font = font
@@ -240,7 +249,7 @@ if workout == "Bicep Curls":
                         rect1_body_colour = (255, 255, 255)
                         rect1_body_text_thickness = 2
                         rect1_body_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect1_body,
                                     rect1_body_text_org,
@@ -249,23 +258,23 @@ if workout == "Bicep Curls":
                                     rect1_body_colour,
                                     rect1_body_text_thickness,
                                     rect1_body_line_type)
-
+                
                         # '''Rectangle 2 '''
-
+                
                         rect2_starting_point = (1000, 82)
                         rect2_ending_point = (1400, 0)
                         rect2_colour = (100, 255, 50)
                         rect2_thickness = -1
-
+                
                         cv2.rectangle(image,
-                                      rect2_starting_point,  # starting point (top left corner)
-                                      rect2_ending_point,  # ending point (bottom right corner)
-                                      rect2_colour,
-                                      rect2_thickness
-                                      )
-
+                                    rect2_starting_point,  # starting point (top left corner)
+                                    rect2_ending_point,  # ending point (bottom right corner)
+                                    rect2_colour,
+                                    rect2_thickness
+                                    )
+                
                         # Add reps total  
-
+                
                         rect2a_title = 'REPS'
                         rect2a_title_text_org = (1016, 12)
                         rect2a_title_font = font
@@ -273,7 +282,7 @@ if workout == "Bicep Curls":
                         rect2a_title_colour = (0, 0, 0)
                         rect2a_title_text_thickness = 1
                         rect2a_title_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2a_title,
                                     rect2a_title_text_org,
@@ -282,7 +291,7 @@ if workout == "Bicep Curls":
                                     rect2a_title_colour,
                                     rect2a_title_text_thickness,
                                     rect2a_title_line_type)
-
+                
                         rect2a_body = str(counter)
                         rect2a_body_text_org = (1016, 64)
                         rect2a_body_font = font
@@ -290,7 +299,7 @@ if workout == "Bicep Curls":
                         rect2a_body_colour = (255, 255, 255)
                         rect2a_body_text_thickness = 2
                         rect2a_body_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2a_body,
                                     rect2a_body_text_org,
@@ -299,9 +308,9 @@ if workout == "Bicep Curls":
                                     rect2a_body_colour,
                                     rect2a_body_text_thickness,
                                     rect2a_body_line_type)
-
+                
                         # Add arm position     
-
+                
                         rect2b_title = 'ARM POSITION'
                         rect2b_title_text_org = (1122, 12)
                         rect2b_title_font = font
@@ -309,7 +318,7 @@ if workout == "Bicep Curls":
                         rect2b_title_colour = (0, 0, 0)
                         rect2b_title_text_thickness = 1
                         rect2b_title_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2b_title,
                                     rect2b_title_text_org,
@@ -318,7 +327,7 @@ if workout == "Bicep Curls":
                                     rect2b_title_colour,
                                     rect2b_title_text_thickness,
                                     rect2b_title_line_type)
-
+                
                         rect2b_body = str(arm_position)
                         rect2b_body_text_org = (1122, 64)
                         rect2b_body_font = font
@@ -326,7 +335,7 @@ if workout == "Bicep Curls":
                         rect2b_body_colour = (255, 255, 255)
                         rect2b_body_text_thickness = 2
                         rect2b_body_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2b_body,
                                     rect2b_body_text_org,
@@ -335,22 +344,24 @@ if workout == "Bicep Curls":
                                     rect2b_body_colour,
                                     rect2b_body_text_thickness,
                                     rect2b_body_line_type)
-
+                
                         # Use model to identify landmarks in the image 
                         mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                                  mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2,
-                                                                         circle_radius=2),
-                                                  mp_drawing.DrawingSpec(color=(164, 66, 22), thickness=6,
-                                                                         circle_radius=7)
-                                                  )
-
+                                                mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2, circle_radius=2),
+                                                mp_drawing.DrawingSpec(color=(164, 66, 22), thickness=6, circle_radius=7)
+                                                )
+                
                         cv2.imread('AI Personal Trainer', image)
-
+                
                         if cv2.waitKey(1) & 0xFF == ord('q'):
                             break
-
+                
                 cap.release()
                 cv2.destroyAllWindows()
+                
+                
+
+
 
 # Pushups
 if workout == "Push-ups":
@@ -391,7 +402,6 @@ if workout == "Push-ups":
 
                 """)
 
-
                 # Create function that forms angles at 3 end-points - the return of trigonometry :)
                 def calculate_pushup_angle(a, b, c):
                     a = np.array(a)  # First endpoint
@@ -408,6 +418,8 @@ if workout == "Push-ups":
                         angle = 360 - angle
 
                     return abs(angle)
+
+
 
 
                 # Establish your counter variables
@@ -427,7 +439,7 @@ if workout == "Push-ups":
 
                         if ret:
                             assert not isinstance(frame, type(None))
-
+                        
                         if not ret:
                             print(" Ignoring empty webcam frame ")
                             continue
@@ -633,6 +645,7 @@ if workout == "Push-ups":
                 cap.release()
                 cv2.destroyAllWindows()
 
+
 # Squats
 if workout == "Squats":
     with st.container():
@@ -667,95 +680,89 @@ if workout == "Squats":
             if run:
                 st.markdown(""" **Remember to prioritize good technique when performing your exercise to get the best 
                 out of your sessions - enjoy your workout!** """)
-
-
-                def calculate_squat_angle(a, b, c):
-                    a = np.array(a)  # First endpoint
-                    b = np.array(b)  # Middle endpoint
-                    c = np.array(c)  # Last endpoint
-
+                def calculate_squat_angle(a,b,c):
+                    a = np.array(a) # First endpoint
+                    b = np.array(b) # Middle endpoint
+                    c = np.array(c) # Last endpoint
+                    
                     # Calculate radians to convert to angles
-                    radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
-                    angle = np.abs(radians * 180.0 / np.pi)
+                    radians = np.arctan2(c[1]-b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
+                    angle = np.abs(radians * 180.0/np.pi) 
                     angle = abs(angle)
-
+                    
                     # Convert angle between 0 and 180 
                     if angle > 180.0:
-                        angle = 360 - angle
-
+                        angle=360-angle
+                        
                     return abs(angle)
-
-
+                    
                 cap = cv2.VideoCapture(0)
-
+                
                 # Establish your counter variables
                 counter = 0  # number of curls to start with
                 squat_position = None  # top or bottom part of your curl
                 font = cv2.FONT_HERSHEY_SIMPLEX
-
+                
                 with mp_pose.Pose(min_detection_confidence=0.5,
-                                  min_tracking_confidence=0.5) as pose:  # level of detection & tracking accuracy
+                                min_tracking_confidence=0.5) as pose:  # level of detection & tracking accuracy
                     while cap.isOpened():
                         success, frame = cap.read()
-
+                
                         # Recolour image from BGR to RGB 
                         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                         image.flags.writeable = False  # make pixel arrays read-only to detect image (saves disk memory)
-
+                
                         # Detect image 
                         results = pose.process(image)
-
+                
                         # Recolour image from RGB to BGR again
-                        image.flags.writeable = True  # Make pixel arrays writable (editable) to revert from RGB to BGR
+                        image.flags.writeable = True    # Make pixel arrays writable (editable) to revert from RGB to BGR
                         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                         image = cv2.resize(image, (1280, 720))
-
+                
                         # Extract landmarks by collecting x,y coordinates for useful body joints
                         try:
                             landmarks = results.pose_landmarks.landmark
-                            hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP].x,
-                                   landmarks[mp_pose.PoseLandmark.LEFT_HIP].y]
-                            knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE].x,
-                                    landmarks[mp_pose.PoseLandmark.LEFT_KNEE].y]
-                            ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE].x,
-                                     landmarks[mp_pose.PoseLandmark.LEFT_ANKLE].y]
-
+                            hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP].x, landmarks[mp_pose.PoseLandmark.LEFT_HIP].y]
+                            knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE].x, landmarks[mp_pose.PoseLandmark.LEFT_KNEE].y]
+                            ankle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE].x, landmarks[mp_pose.PoseLandmark.LEFT_ANKLE].y]
+                            
                             angle = calculate_squat_angle(hip, knee, ankle)
-
+                
                             # Display angles in images 
                             cv2.putText(image, str(angle),
                                         tuple(np.multiply(knee, [640, 480]).astype(int)),
                                         font, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                                         )
-
+                
                             # Count the number of squats
                             if angle > 170:  # if angle is greater than 160...
                                 squat_position = "up"  # ... then arm position is down
-
+                
                             if angle < 60 and squat_position == "up":  # if angle is less than 30 and arm position is down...
                                 squat_position = "down"  # ...record arm position as up...
                                 counter += 1  # ...and add one rep to the total reps ...
                                 print(counter)  # ... and display total counts
-
+                
                         except:
                             pass
-
+                
                         # Create progress tracking box at the top left of the screen  
                         # '''Rectangle 1 '''
-
+                
                         rect1_starting_point = (0, 0)
                         rect1_ending_point = (370, 82)
                         rect1_colour = (245, 117, 16)
                         rect1_thickness = -1
-
+                
                         cv2.rectangle(image,
-                                      rect1_starting_point,  # starting point
-                                      rect1_ending_point,  # ending point
-                                      rect1_colour,  # box colour
-                                      rect1_thickness)  # thickness
-
+                                    rect1_starting_point,  # starting point
+                                    rect1_ending_point,  # ending point
+                                    rect1_colour,  # box colour
+                                    rect1_thickness)  # thickness
+                
                         # Add 'WORKOUT' title to rectangle
-
+                
                         rect1_title = 'WORKOUT'
                         rect1_title_text_org = (15, 12)
                         rect1_title_font = font
@@ -763,7 +770,7 @@ if workout == "Squats":
                         rect1_title_colour = (0, 0, 0)
                         rect1_title_text_thickness = 1
                         rect1_title_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect1_title,
                                     rect1_title_text_org,
@@ -772,9 +779,9 @@ if workout == "Squats":
                                     rect1_title_colour,
                                     rect1_title_text_thickness,
                                     rect1_title_line_type)
-
+                
                         # Add workout type
-
+                
                         rect1_body = 'Squats'
                         rect1_body_text_org = (10, 65)
                         rect1_body_font = font
@@ -782,7 +789,7 @@ if workout == "Squats":
                         rect1_body_colour = (255, 255, 255)
                         rect1_body_text_thickness = 2
                         rect1_body_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect1_body,
                                     rect1_body_text_org,
@@ -791,23 +798,23 @@ if workout == "Squats":
                                     rect1_body_colour,
                                     rect1_body_text_thickness,
                                     rect1_body_line_type)
-
+                
                         # '''Rectangle 2 '''
-
+                
                         rect2_starting_point = (1000, 82)
                         rect2_ending_point = (1400, 0)
                         rect2_colour = (100, 255, 50)
                         rect2_thickness = -1
-
+                
                         cv2.rectangle(image,
-                                      rect2_starting_point,  # starting point (top left corner)
-                                      rect2_ending_point,  # ending point (bottom right corner)
-                                      rect2_colour,
-                                      rect2_thickness
-                                      )
-
+                                    rect2_starting_point,  # starting point (top left corner)
+                                    rect2_ending_point,  # ending point (bottom right corner)
+                                    rect2_colour,
+                                    rect2_thickness
+                                    )
+                
                         # Add reps total  
-
+                
                         rect2a_title = 'REPS'
                         rect2a_title_text_org = (1016, 12)
                         rect2a_title_font = font
@@ -815,7 +822,7 @@ if workout == "Squats":
                         rect2a_title_colour = (0, 0, 0)
                         rect2a_title_text_thickness = 1
                         rect2a_title_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2a_title,
                                     rect2a_title_text_org,
@@ -824,7 +831,7 @@ if workout == "Squats":
                                     rect2a_title_colour,
                                     rect2a_title_text_thickness,
                                     rect2a_title_line_type)
-
+                
                         rect2a_body = str(counter)
                         rect2a_body_text_org = (1016, 64)
                         rect2a_body_font = font
@@ -832,7 +839,7 @@ if workout == "Squats":
                         rect2a_body_colour = (255, 255, 255)
                         rect2a_body_text_thickness = 2
                         rect2a_body_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2a_body,
                                     rect2a_body_text_org,
@@ -841,9 +848,9 @@ if workout == "Squats":
                                     rect2a_body_colour,
                                     rect2a_body_text_thickness,
                                     rect2a_body_line_type)
-
+                
                         # Add arm position     
-
+                
                         rect2b_title = 'LEG POSITION'
                         rect2b_title_text_org = (1122, 12)
                         rect2b_title_font = font
@@ -851,7 +858,7 @@ if workout == "Squats":
                         rect2b_title_colour = (0, 0, 0)
                         rect2b_title_text_thickness = 1
                         rect2b_title_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2b_title,
                                     rect2b_title_text_org,
@@ -860,7 +867,7 @@ if workout == "Squats":
                                     rect2b_title_colour,
                                     rect2b_title_text_thickness,
                                     rect2b_title_line_type)
-
+                
                         rect2b_body = str(squat_position)
                         rect2b_body_text_org = (1122, 64)
                         rect2b_body_font = font
@@ -868,7 +875,7 @@ if workout == "Squats":
                         rect2b_body_colour = (255, 255, 255)
                         rect2b_body_text_thickness = 2
                         rect2b_body_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2b_body,
                                     rect2b_body_text_org,
@@ -877,22 +884,23 @@ if workout == "Squats":
                                     rect2b_body_colour,
                                     rect2b_body_text_thickness,
                                     rect2b_body_line_type)
-
+                
                         # Use model to identify landmarks in the image 
                         mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                                  mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2,
-                                                                         circle_radius=2),
-                                                  mp_drawing.DrawingSpec(color=(164, 66, 22), thickness=6,
-                                                                         circle_radius=7)
-                                                  )
-
+                                                mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2, circle_radius=2),
+                                                mp_drawing.DrawingSpec(color=(164, 66, 22), thickness=6, circle_radius=7)
+                                                )
+                
                         cv2.imread('AI Personal Trainer', image)
-
+                
                         if cv2.waitKey(1) & 0xFF == ord('q'):
                             break
-
+                
+                
                 cap.release()
                 cv2.destroyAllWindows()
+
+
 
 # High Knees
 if workout == "High-Knees":
@@ -930,96 +938,90 @@ if workout == "High-Knees":
             if run:
                 st.markdown(""" **Remember to prioritize good technique when performing your exercise to get the best 
                 out of your sessions - enjoy your workout!** """)
-
-
-                def calculate_high_knee_angle(a, b, c):
-                    a = np.array(a)  # First endpoint
-                    b = np.array(b)  # Middle endpoint
-                    c = np.array(c)  # Last endpoint
-
+                def calculate_high_knee_angle(a,b,c):
+                    a = np.array(a) # First endpoint
+                    b = np.array(b) # Middle endpoint
+                    c = np.array(c) # Last endpoint
+                    
                     # Calculate radians to convert to angles
-                    radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
-                    angle = np.abs(radians * 180.0 / np.pi)
+                    radians = np.arctan2(c[1]-b[1], c[0]-b[0]) - np.arctan2(a[1]-b[1], a[0]-b[0])
+                    angle = np.abs(radians * 180.0/np.pi) 
                     angle = abs(angle)
-
+                    
                     # Convert angle between 0 and 180 
                     if angle > 180.0:
-                        angle = 360 - angle
-
-                    return abs(angle)
-
-
+                        angle=360-angle
+                        
+                    return abs(angle) 
+                    
+                
                 cap = cv2.VideoCapture(0)
-
+                
                 # Establish your counter variables
                 counter = 0  # number of curls to start with
                 high_knee_position = None  # top or bottom part of your curl
                 font = cv2.FONT_HERSHEY_SIMPLEX
-
-                with mp_pose.Pose(min_detection_confidence=0.5,
-                                  min_tracking_confidence=0.5) as pose:  # level of detection & tracking accuracy
+                
+                with mp_pose.Pose(min_detection_confidence=0.5,min_tracking_confidence=0.5) as pose:  # level of detection & tracking accuracy
                     while cap.isOpened():
                         success, frame = cap.read()
-
+                
                         # Recolour image from BGR to RGB 
                         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                         image.flags.writeable = False  # make pixel arrays read-only to detect image (saves disk memory)
-
+                
                         # Detect image 
                         results = pose.process(image)
-
+                
                         # Recolour image from RGB to BGR again
-                        image.flags.writeable = True  # Make pixel arrays writable (editable) to revert from RGB to BGR
+                        image.flags.writeable = True    # Make pixel arrays writable (editable) to revert from RGB to BGR
                         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                         image = cv2.resize(image, (1280, 720))
-
+                
                         # Extract landmarks by collecting x,y coordinates for useful body joints
                         try:
                             landmarks = results.pose_landmarks.landmark
-
-                            shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER].x,
-                                        landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER].y]
-                            hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP].x,
-                                   landmarks[mp_pose.PoseLandmark.LEFT_HIP].y]
-                            knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE].x,
-                                    landmarks[mp_pose.PoseLandmark.LEFT_KNEE].y]
-
+                
+                            shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER].x, landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER].y]
+                            hip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP].x, landmarks[mp_pose.PoseLandmark.LEFT_HIP].y]
+                            knee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE].x, landmarks[mp_pose.PoseLandmark.LEFT_KNEE].y]
+                            
                             angle = calculate_high_knee_angle(shoulder, hip, knee)
-
+                
                             # Display angles in images 
                             cv2.putText(image, str(angle),
                                         tuple(np.multiply(hip, [640, 480]).astype(int)),
                                         font, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                                         )
-
+                
                             # Count the number of high_knees
                             if angle > 120:  # if angle is greater than 160...
                                 high_knee_position = "down"  # ... then arm position is down
-
+                
                             if angle < 70 and high_knee_position == "down":  # if angle is less than 30 and arm position is down...
                                 high_knee_position = "up"  # ...record arm position as up...
                                 counter += 1  # ...and add one rep to the total reps ...
                                 print(counter)  # ... and display total counts
-
+                
                         except:
                             pass
-
+                
                         # Create progress tracking box at the top left of the screen  
                         # '''Rectangle 1 '''
-
+                
                         rect1_starting_point = (0, 0)
                         rect1_ending_point = (370, 82)
                         rect1_colour = (245, 117, 16)
                         rect1_thickness = -1
-
+                
                         cv2.rectangle(image,
-                                      rect1_starting_point,  # starting point
-                                      rect1_ending_point,  # ending point
-                                      rect1_colour,  # box colour
-                                      rect1_thickness)  # thickness
-
+                                    rect1_starting_point,  # starting point
+                                    rect1_ending_point,  # ending point
+                                    rect1_colour,  # box colour
+                                    rect1_thickness)  # thickness
+                
                         # Add 'WORKOUT' title to rectangle
-
+                
                         rect1_title = 'WORKOUT'
                         rect1_title_text_org = (15, 12)
                         rect1_title_font = font
@@ -1027,7 +1029,7 @@ if workout == "High-Knees":
                         rect1_title_colour = (0, 0, 0)
                         rect1_title_text_thickness = 1
                         rect1_title_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect1_title,
                                     rect1_title_text_org,
@@ -1036,9 +1038,9 @@ if workout == "High-Knees":
                                     rect1_title_colour,
                                     rect1_title_text_thickness,
                                     rect1_title_line_type)
-
+                
                         # Add workout type
-
+                
                         rect1_body = 'High Knees'
                         rect1_body_text_org = (10, 65)
                         rect1_body_font = font
@@ -1046,7 +1048,7 @@ if workout == "High-Knees":
                         rect1_body_colour = (255, 255, 255)
                         rect1_body_text_thickness = 2
                         rect1_body_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect1_body,
                                     rect1_body_text_org,
@@ -1055,23 +1057,23 @@ if workout == "High-Knees":
                                     rect1_body_colour,
                                     rect1_body_text_thickness,
                                     rect1_body_line_type)
-
+                
                         # '''Rectangle 2 '''
-
+                
                         rect2_starting_point = (1000, 82)
                         rect2_ending_point = (1400, 0)
                         rect2_colour = (100, 255, 50)
                         rect2_thickness = -1
-
+                
                         cv2.rectangle(image,
-                                      rect2_starting_point,  # starting point (top left corner)
-                                      rect2_ending_point,  # ending point (bottom right corner)
-                                      rect2_colour,
-                                      rect2_thickness
-                                      )
-
+                                    rect2_starting_point,  # starting point (top left corner)
+                                    rect2_ending_point,  # ending point (bottom right corner)
+                                    rect2_colour,
+                                    rect2_thickness
+                                    )
+                
                         # Add reps total  
-
+                
                         rect2a_title = 'REPS'
                         rect2a_title_text_org = (1016, 12)
                         rect2a_title_font = font
@@ -1079,7 +1081,7 @@ if workout == "High-Knees":
                         rect2a_title_colour = (0, 0, 0)
                         rect2a_title_text_thickness = 1
                         rect2a_title_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2a_title,
                                     rect2a_title_text_org,
@@ -1088,7 +1090,7 @@ if workout == "High-Knees":
                                     rect2a_title_colour,
                                     rect2a_title_text_thickness,
                                     rect2a_title_line_type)
-
+                
                         rect2a_body = str(counter)
                         rect2a_body_text_org = (1016, 64)
                         rect2a_body_font = font
@@ -1096,7 +1098,7 @@ if workout == "High-Knees":
                         rect2a_body_colour = (255, 255, 255)
                         rect2a_body_text_thickness = 2
                         rect2a_body_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2a_body,
                                     rect2a_body_text_org,
@@ -1105,9 +1107,9 @@ if workout == "High-Knees":
                                     rect2a_body_colour,
                                     rect2a_body_text_thickness,
                                     rect2a_body_line_type)
-
+                
                         # Add arm position     
-
+                
                         rect2b_title = 'LEG POSITION'
                         rect2b_title_text_org = (1122, 12)
                         rect2b_title_font = font
@@ -1115,7 +1117,7 @@ if workout == "High-Knees":
                         rect2b_title_colour = (0, 0, 0)
                         rect2b_title_text_thickness = 1
                         rect2b_title_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2b_title,
                                     rect2b_title_text_org,
@@ -1124,7 +1126,7 @@ if workout == "High-Knees":
                                     rect2b_title_colour,
                                     rect2b_title_text_thickness,
                                     rect2b_title_line_type)
-
+                
                         rect2b_body = str(high_knee_position)
                         rect2b_body_text_org = (1122, 64)
                         rect2b_body_font = font
@@ -1132,7 +1134,7 @@ if workout == "High-Knees":
                         rect2b_body_colour = (255, 255, 255)
                         rect2b_body_text_thickness = 2
                         rect2b_body_line_type = cv2.LINE_AA
-
+                
                         cv2.putText(image,
                                     rect2b_body,
                                     rect2b_body_text_org,
@@ -1141,30 +1143,29 @@ if workout == "High-Knees":
                                     rect2b_body_colour,
                                     rect2b_body_text_thickness,
                                     rect2b_body_line_type)
-
+                
                         # Use model to identify landmarks in the image 
                         mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
-                                                  mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2,
-                                                                         circle_radius=2),
-                                                  mp_drawing.DrawingSpec(color=(164, 66, 22), thickness=6,
-                                                                         circle_radius=7)
-                                                  )
-
-                        cv2.imread('AI Personal Trainer', image)
+                                                mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2, circle_radius=2),
+                                                mp_drawing.DrawingSpec(color=(164, 66, 22), thickness=6, circle_radius=7)
+                                                )
+                
+                        cv2.imread('AI Personal Trainer', image)                
                         if cv2.waitKey(1) & 0xFF == ord('q'):
                             break
                         # run == False
 
+                
                 cap.release()
                 cv2.destroyAllWindows()
+                
 
 
 
 
 
-#
-# else:
-#     st.write('*So...have you decided on what workout you want or?????*')
+else:
+    st.write('*So...have you decided on what workout you want or?????*')
 
 st.write('---------------')
 # st.text(" How do you grow muscles?")
@@ -1176,9 +1177,7 @@ st.write('---------------')
 
 with st.container():
     st.markdown(
-        """**Disclaimer: The information provided on this app should not be considered as professional, medical or 
-        health advice (these are strictly the opinions of the developer) - please seek your doctor's recommendations 
-        for professional advice on your health situation or read at your own discretion.** """)
+        """ **Disclaimer: The information provided on this app should not be considered as professional, medical or health advice (these are strictly the opinions of the developer) - please seek your doctor's recommendations for professional advice on your health situation or read at your own discretion.** """)
     column1, column2, column3 = st.columns(3)
     with column1:
         st.subheader("1. What are your fitness goals?")
@@ -1409,6 +1408,7 @@ st.markdown("""""")
 
 # * [LinkedIn](https://www.linkedin.com/in/stephen-david-williams-860428123/)
 # * [Gmail](mailto:stephenodavidwilliams@gmail.com)
+
 
 # """)
 
