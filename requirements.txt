@@ -4,3 +4,4 @@ requests==2.27.1
 streamlit==1.8.0
 streamlit_lottie==0.0.3
 opencv-python-headless==4.2.0.32
+click==8.0.4
