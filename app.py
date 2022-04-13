@@ -19,7 +19,6 @@ st.set_page_config(page_title="My AI Trainer",
                    page_icon="🧊",
                    menu_items=
                    {'Get Help': 'https://www.extremelycoolapp.com/help',
-                    'Report a bug': "https://www.extremelycoolapp.com/bug",
                     'About': "# This is a header. This is an *extremely* cool app!"}
                    )
 
@@ -101,7 +100,6 @@ if workout == "Bicep Curls":
             st.subheader("Preparation")
             st.markdown("""
                 * Warm up your arms by performing light stretches before beginning workout 
-                
 
             """)
             # st.markdown("""""")
@@ -1178,7 +1176,9 @@ st.write('---------------')
 
 with st.container():
     st.markdown(
-        """ **Disclaimer: The information provided on this app should not be considered as professional, medical or health advice (these are strictly the opinions of the developer) - please seek your doctor's recommendations for professional advice on your health situation or read at your own discretion.** """)
+        """**Disclaimer: The information provided on this app should not be considered as professional, medical or 
+        health advice (these are strictly the opinions of the developer) - please seek your doctor's recommendations 
+        for professional advice on your health situation or read at your own discretion.** """)
     column1, column2, column3 = st.columns(3)
     with column1:
         st.subheader("1. What are your fitness goals?")
@@ -1409,7 +1409,6 @@ st.markdown("""""")
 
 # * [LinkedIn](https://www.linkedin.com/in/stephen-david-williams-860428123/)
 # * [Gmail](mailto:stephenodavidwilliams@gmail.com)
-
 
 # """)
 
