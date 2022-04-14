@@ -4,6 +4,8 @@
 
 ## Preface :key: :memo:
 
+Welcome to my [AI Personal Trainer](https://ai-personal-trainer.herokuapp.com/)
+
 In this project the goal is to create an app that monitors the body movement during specific workouts in order to differentiate between good/bad reps.
 
 Reps performed with good workout form are flagged as good reps (i.e. incrementally added to "total reps count") and reps with bad workout form are currently ignored (i.e. not added to "total reps count"). 
