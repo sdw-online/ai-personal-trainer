@@ -4,7 +4,7 @@
 
 ## Preface :key: :memo:
 
-Welcome to my [AI Personal Trainer](https://ai-personal-trainer.herokuapp.com/)
+Welcome to my [AI Personal Trainer v1 !](https://ai-personal-trainer.herokuapp.com/)
 
 In this project the goal is to create an app that monitors the body movement during specific workouts in order to differentiate between good/bad reps.
 
