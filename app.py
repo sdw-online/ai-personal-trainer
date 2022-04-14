@@ -1164,8 +1164,8 @@ if workout == "High-Knees":
 
 
 
-else:
-    st.write('*So...have you decided on what workout you want or?????*')
+# else:
+#     st.write('*So...have you decided on what workout you want or?????*')
 
 st.write('---------------')
 # st.text(" How do you grow muscles?")
