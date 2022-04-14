@@ -35,6 +35,8 @@ Reps performed with good workout form are flagged as good reps (i.e. incremental
 
 ## Tools   :hammer_and_wrench:
 
+To be able to use the AI personal trainer, you need (a):
+
 - camera/laptop webcam (for live streaming)
  
 
