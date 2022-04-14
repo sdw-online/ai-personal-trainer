@@ -24,7 +24,10 @@ Reps performed with good workout form are flagged as good reps (i.e. incremental
 
 - **mediapipe** - for accessing Google's pose estimation algorithm 
 - **open-cv** - for computer vision resources 
-- **numpy** - for mathematical computation 
+- **numpy** - for mathematical computation  
+- **time** -  for calculating metrics associated with time (seconds, mins, hrs)
+- **json** -  for deserializing JSON formatted data
+- **requests** - for processing HTTP requests 
 - **streamlit** - for quick web app prototyping 
 - **streamlit_lottie** - for embedding Lottie animations into Streamlit  
 
