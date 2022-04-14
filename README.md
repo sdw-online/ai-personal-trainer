@@ -6,7 +6,7 @@
 
 Welcome to my [AI Personal Trainer v1 !](https://ai-personal-trainer.herokuapp.com/)
 
-In this project the goal is to create an app that monitors the body movement during specific workouts in order to differentiate between good/bad reps.
+This is a computer vision project which focuses on monitoring human body movement during specific workouts in order to differentiate between good/bad reps.
 
 Reps performed with good workout form are flagged as good reps (i.e. incrementally added to "total reps count") and reps with bad workout form are currently ignored (i.e. not added to "total reps count"). 
 
@@ -24,14 +24,17 @@ Reps performed with good workout form are flagged as good reps (i.e. incremental
 
 ## Technologies :alien:
 
-- **mediapipe** - for accessing Google's pose estimation algorithm 
-- **open-cv** - for computer vision resources 
-- **numpy** - for mathematical computation  
-- **time** -  for calculating metrics associated with time (seconds, mins, hrs)
-- **json** -  for deserializing JSON formatted data
-- **requests** - for processing HTTP requests 
-- **streamlit** - for quick web app prototyping 
-- **streamlit_lottie** - for embedding Lottie animations into Streamlit  
+
+
+
+- [**mediapipe**](https://github.com/google/mediapipe) - for accessing Google's pose estimation algorithm 
+- [**open-cv**](https://github.com/opencv/opencv) - for computer vision resources 
+- [**numpy**](https://github.com/numpy/numpy) - for mathematical computation  
+- [**time**](https://github.com/PaulStoffregen/Time) -  for calculating metrics associated with time (seconds, mins, hrs)
+- [**json**](https://github.com/nlohmann/json) -  for deserializing JSON formatted data
+- [**requests**](https://github.com/psf/requests) - for processing HTTP requests 
+- [**streamlit**](https://github.com/streamlit/streamlit) - for quick web app prototyping 
+- [**streamlit_lottie**](https://github.com/andfanilo/streamlit-lottie) - for embedding Lottie animations into Streamlit  
 
 
 
@@ -178,6 +181,14 @@ Here are the workouts included in v1 release:
 - **Starting pose:** If angles formed by selected landmarks is **greater than** 120 degrees
 - **Ending pose:** If angles formed by selected landmarks is **less than** 70 degrees
 
+
+## Development Goals
+
+Future release(s) will focus on: 
+
+* More advanced AI algorithms/techniques e.g. MoveNet, YOLOv5, MobileNet
+* Sharpening pose estimation accuracy of current model
+* Enhancing user interface features (e.g. converting app into a more robust SPA)
 
 
 ## Conclusion  :closed_lock_with_key:
