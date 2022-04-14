@@ -182,6 +182,6 @@ Here are the workouts included in v1 release:
 
 ## Conclusion  :closed_lock_with_key:
 
-The 2nd release will address the "open-cv" bug that currently prevents webcam activating on certain machines after selecting a workout and clicking on "Start Workout" checkbox. 
+The 2nd release will address the "open-cv" bug that currently prevents webcam activating on certain machines after selecting a workout and clicking on "Start Workout" checkbox.
 
-Feel free to reach out to me if you have any thoughts or suggestions regarding the app and I will get to them as soon as possible :muscle: :space_invader:
+Feel free to reach out to me via [LinkedIn](https://www.linkedin.com/in/stephen-david-williams-860428123/) or [email](mailto:stephenodavidwilliams@gmail.com) if you have any thoughts or suggestions regarding the app and I will get to them as soon as possible :muscle: :space_invader:
