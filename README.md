@@ -53,21 +53,21 @@ Here are the workouts included in v1 release:
 
 1. **Right side**
 
-Shoulder: 12
-Elbow: 14
-Wrist: 16
+- Shoulder: 12
+- Elbow: 14
+- Wrist: 16
 
 2. **Left side**
 
-Shoulder: 11
-Elbow: 13
-Wrist: 15
+- Shoulder: 11
+- Elbow: 13
+- Wrist: 15
 
 
 #### Angles
 
-**Starting pose:** If angles formed by selected landmarks is **greater than** 160 degrees
-**Ending pose:** If angles formed by selected landmarks is **less than** 30 degrees
+- **Starting pose:** If angles formed by selected landmarks is **greater than** 160 degrees
+- **Ending pose:** If angles formed by selected landmarks is **less than** 30 degrees
 
 
 
@@ -84,22 +84,22 @@ Wrist: 15
 
 1. **Right side**
 
-Shoulder: 12
-Elbow: 14
-Wrist: 16
+- Shoulder: 12
+- Elbow: 14
+- Wrist: 16
 
 2. **Left side**
 
-Shoulder: 11
-Elbow: 13
-Wrist: 15
+- Shoulder: 11
+- Elbow: 13
+- Wrist: 15
 
 
 
 #### Angles
 
-**Starting pose:** If angles formed by selected landmarks is **greater than** 170 degrees
-**Ending pose:** If angles formed by selected landmarks is **less than** 45 degrees
+- **Starting pose:** If angles formed by selected landmarks is **greater than** 170 degrees
+- **Ending pose:** If angles formed by selected landmarks is **less than** 45 degrees
 
 
 
@@ -119,23 +119,23 @@ Wrist: 15
 
 1. **Right side**
 
-Hip: 24
-Knee: 26
-Ankle: 28
+- Hip: 24
+- Knee: 26
+- Ankle: 28
 
 
 2. **Left side**
 
-Hip: 23
-Knee: 25 
-Ankle: 27
+- Hip: 23
+- Knee: 25 
+- Ankle: 27
 
 
 
 #### Angles
 
-**Starting pose:** If angles formed by selected landmarks is **greater than** 170 degrees
-**Ending pose:** If angles formed by selected landmarks is **less than** 60 degrees
+- **Starting pose:** If angles formed by selected landmarks is **greater than** 170 degrees
+- **Ending pose:** If angles formed by selected landmarks is **less than** 60 degrees
 
 
 
@@ -154,22 +154,22 @@ Ankle: 27
 
 1. **Right side**
 
-Shoulder: 12
-Hip: 24
-Knee: 26
+- Shoulder: 12
+- Hip: 24
+- Knee: 26
 
 
 2. **Left side**
 
-Shoulder: 11
-Hip: 23
-Knee: 25
+- Shoulder: 11
+- Hip: 23
+- Knee: 25
 
 
 #### Angles
 
-**Starting pose:** If angles formed by selected landmarks is **greater than** 120 degrees
-**Ending pose:** If angles formed by selected landmarks is **less than** 70 degrees
+- **Starting pose:** If angles formed by selected landmarks is **greater than** 120 degrees
+- **Ending pose:** If angles formed by selected landmarks is **less than** 70 degrees
 
 
 
